@@ -44,9 +44,11 @@ def update_numeric_value():
             value = int(divcontent)
             if 0 <= value <= 14:
                 numeric_value = value
+            else:
+                numeric_value = None
         except ValueError:
-            pass
-        time.sleep(3)  # Pause for 5 seconds before next scrape
+            numeric_value = None
+        time.sleep(5)  # Pause for 5 seconds before next scrape
 
 @app.route('/get_numeric_value', methods=['GET'])
 def capture_and_transcribe():
