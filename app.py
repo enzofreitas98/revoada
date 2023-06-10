@@ -27,30 +27,28 @@ driver.get(url)
 # Initialize global variable
 numeric_value = None
 
-def update_numeric_value():
-    global numeric_value
-    while True:
-        # Get the complete page content
-        page_source = driver.page_source
-
-        # Create a BeautifulSoup object to parse the page content
-        soup = BeautifulSoup(page_source, 'html.parser')
-
-        # Extract specific content using BeautifulSoup methods
-        divcontent = soup.find('div', class_='active').get_text(strip=True)
-
-        # Convert content to a number and check if it's in the desired range
-        try:
-            value = int(divcontent)
-            if 0 <= value <= 14:
-                numeric_value = value
-        except ValueError:
-            pass
-        time.sleep(5)  # Pause for 5 seconds before next scrape
-
 @app.route('/get_numeric_value', methods=['GET'])
 def capture_and_transcribe():
+    global numeric_value
+
+    while True:
+            # Obter o conteúdo completo da página
+        page_source = driver.page_source
+
+            # Criar um objeto BeautifulSoup para analisar o conteúdo da página
+        soup = BeautifulSoup(page_source, 'html.parser')
+
+            # Extrair o conteúdo específico usando métodos do BeautifulSoup
+            # Por exemplo, suponha que você queira extrair o conteúdo de uma div com a classe "my-div-class"
+        div_content = soup.find('div', class_='active').text
+
+            # Converter o conteúdo para um número e verificar se está no intervalo desejado
+        numeric_value = int(div_content)  # supondo que div_content seja uma string numérica
+        if 0 <= numeric_value <= 14:
+            break
+
     return jsonify({'numeric_value': numeric_value})
+
 
 if __name__=='__main__':
     # Start the background task
