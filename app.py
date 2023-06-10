@@ -3,22 +3,23 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import os
+from selenium.webdriver.chrome.service import Service
 
 app = Flask(__name__)
 
 url = 'https://double.turbogames.io/'
 
 # Configurar opções do Chrome
-chrome_options = Options()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_SHIM")
+chrome_options = webdriver.ChromeOptions()
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")  # Adicionei essa linha
+chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--remote-debugging-port=9222")
 
 # Iniciar o WebDriver
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options)
 driver.get(url)
 
 is_triggered = False
