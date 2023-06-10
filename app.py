@@ -3,11 +3,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import os
+import logging
 from selenium.webdriver.chrome.service import Service
 from threading import Thread
 import time
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
 
 url = 'https://double.turbogames.io/'
 
@@ -20,44 +22,36 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--remote-debugging-port=9222")
 
-# Initialize the WebDriver
+
+    # Initialize the WebDriver
 driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options)
 driver.get(url)
 
+
 # Initialize global variable
-numeric_value = None
+numeric_value = ""
 
 def update_numeric_value():
     global numeric_value
     while True:
-        # Get the complete page content
-        page_source = driver.page_source
+            # Obter o conteúdo completo da página
+            page_source = driver.page_source
 
-        # Create a BeautifulSoup object to parse the page content
-        soup = BeautifulSoup(page_source, 'html.parser')
+            # Criar um objeto BeautifulSoup para analisar o conteúdo da página
+            soup = BeautifulSoup(page_source, 'html.parser')
 
-        # Extract specific content using BeautifulSoup methods
-        divcontent = soup.find('div', class_='active').get_text(strip=True)
-
-        # Convert content to a number and check if it's in the desired range
-        try:
-            value = int(divcontent)
-            if 0 <= value <= 14:
-                numeric_value = value
-            else:
-                numeric_value = None
-        except ValueError:
-            numeric_value = None
-        time.sleep(5)  # Pause for 5 seconds before next scrape
+            # Extrair o conteúdo específico usando métodos do BeautifulSoup
+            # Por exemplo, suponha que você queira extrair o conteúdo de uma div com a classe "my-div-class"
+            div_content = soup.find('div', class_='active').text
+            numeric_value = div_content
 
 @app.route('/get_numeric_value', methods=['GET'])
 def capture_and_transcribe():
     return jsonify({'numeric_value': numeric_value})
 
-if __name__ == '__main__':
+if __name__=='__main__':
     # Start the background task
     t = Thread(target=update_numeric_value)
-    t.daemon = True  # Set the thread as a daemon to exit when the main program ends
     t.start()
 
     # Start the Flask app
