@@ -6,6 +6,7 @@ import os
 import logging
 from selenium.webdriver.chrome.service import Service
 from threading import Thread
+import time
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -51,6 +52,7 @@ def start_background_task():
 @app.route('/get_numeric_value', methods=['GET'])
 def get_numeric_value():
     global numeric_value
+    time.sleep(1)  # Pausa de 1 segundo para aguardar a atualização da variável
     return jsonify({'numeric_value': numeric_value})
 
 if __name__ == '__main__':
