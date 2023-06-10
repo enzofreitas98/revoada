@@ -52,7 +52,7 @@ def capture_and_transcribe():
 
 if __name__=='__main__':
     # Start the background task
-    t = Thread(target=update_numeric_value)
+    t = Thread(target=capture_and_transcribe)
     t.start()
 
     # Start the Flask app
