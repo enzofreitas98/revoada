@@ -46,15 +46,16 @@ def update_numeric_value():
                 numeric_value = value
         except ValueError:
             pass
-        time.sleep(5)  # Pause for 5 seconds before next scrape
+        time.sleep(3)  # Pause for 5 seconds before next scrape
 
 @app.route('/get_numeric_value', methods=['GET'])
 def capture_and_transcribe():
     return jsonify({'numeric_value': numeric_value})
 
-if __name__=='__main__':
+if __name__ == '__main__':
     # Start the background task
     t = Thread(target=update_numeric_value)
+    t.daemon = True  # Set the thread as a daemon to exit when the main program ends
     t.start()
 
     # Start the Flask app
