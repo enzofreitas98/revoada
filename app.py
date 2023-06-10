@@ -3,13 +3,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import os
-import logging
 from selenium.webdriver.chrome.service import Service
 from threading import Thread
 import time
 
 app = Flask(__name__)
-logging.basicConfig(level=logging.INFO)
 
 url = 'https://double.turbogames.io/'
 
@@ -22,13 +20,9 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--remote-debugging-port=9222")
 
-try:
-    # Initialize the WebDriver
-    driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options)
-    driver.get(url)
-except Exception as e:
-    logging.error(f"Error initializing WebDriver: {e}")
-    raise
+# Initialize the WebDriver
+driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options)
+driver.get(url)
 
 # Initialize global variable
 numeric_value = None
@@ -36,22 +30,22 @@ numeric_value = None
 def update_numeric_value():
     global numeric_value
     while True:
+        # Get the complete page content
+        page_source = driver.page_source
+
+        # Create a BeautifulSoup object to parse the page content
+        soup = BeautifulSoup(page_source, 'html.parser')
+
+        # Extract specific content using BeautifulSoup methods
+        divcontent = soup.find('div', class_='active').get_text(strip=True)
+
+        # Convert content to a number and check if it's in the desired range
         try:
-            # Get the complete page content
-            page_source = driver.page_source
-
-            # Create a BeautifulSoup object to parse the page content
-            soup = BeautifulSoup(page_source, 'html.parser')
-
-            # Extract specific content using BeautifulSoup methods
-            divcontent = soup.find('div', class_='active').get_text(strip=True)
-
-            # Convert content to a number and check if it's in the desired range
             value = int(divcontent)
             if 0 <= value <= 14:
                 numeric_value = value
-        except Exception as e:
-            logging.error(f"Error updating numeric value: {e}")
+        except ValueError:
+            pass
         time.sleep(5)  # Pause for 5 seconds before next scrape
 
 @app.route('/get_numeric_value', methods=['GET'])
