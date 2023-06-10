@@ -42,15 +42,17 @@ def update_numeric_value():
         div_content = soup.find('div', class_='active').text
         numeric_value = div_content
 
+@app.before_first_request
+def start_background_task():
+    # Start the background task
+    t = Thread(target=update_numeric_value)
+    t.start()
+
 @app.route('/get_numeric_value', methods=['GET'])
 def get_numeric_value():
     global numeric_value
     return jsonify({'numeric_value': numeric_value})
 
 if __name__ == '__main__':
-    # Start the background task
-    t = Thread(target=update_numeric_value)
-    t.start()
-
     # Start the Flask app
     app.run(port=5000, debug=True)
