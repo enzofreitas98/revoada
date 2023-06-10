@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 import os
 import logging
@@ -22,7 +23,7 @@ chrome_driver_options.add_argument("--remote-debugging-port=9222")
 chrome_driver_options.add_argument("--single-process")  # Adicione esta linha
 
 # Initialize the WebDriver
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_driver_options)
+driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options
 driver.get(url)
 
 # Initialize global variable
