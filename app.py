@@ -25,28 +25,28 @@ driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROME
 driver.get(url)
 
 # Initialize global variable
-numeric_value = "Not updated yet"
+numeric_value = None
 
 def update_numeric_value():
     global numeric_value
     while True:
+        # Get the complete page content
+        page_source = driver.page_source
+
+        # Create a BeautifulSoup object to parse the page content
+        soup = BeautifulSoup(page_source, 'html.parser')
+
+        # Extract specific content using BeautifulSoup methods
+        divcontent = soup.find('div', class_='active').get_text(strip=True)
+
+        # Convert content to a number and check if it's in the desired range
         try:
-            # Get the complete page content
-            page_source = driver.page_source
-
-            # Create a BeautifulSoup object to parse the page content
-            soup = BeautifulSoup(page_source, 'html.parser')
-
-            # Extract specific content using BeautifulSoup methods
-            divcontent = soup.find('div', class_='active').get_text(strip=True)
-
-            # Convert content to a number and check if it's in the desired range
             value = int(divcontent)
             if 0 <= value <= 14:
                 numeric_value = value
-        except Exception as e:
-            numeric_value = f"An error occurred: {str(e)}"
-            time.sleep(5)  # Pause for 5 seconds before next scrape
+        except ValueError:
+            pass
+        time.sleep(5)  # Pause for 5 seconds before next scrape
 
 @app.route('/get_numeric_value', methods=['GET'])
 def capture_and_transcribe():
