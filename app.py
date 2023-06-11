@@ -25,4 +25,4 @@ soup = BeautifulSoup(page_source, 'html.parser')
 div_content = soup.find('div', class_='active').text
 current_value = div_content
 
-print(current_value)
+print(page_source)
