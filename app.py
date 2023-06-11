@@ -23,6 +23,6 @@ driver.get(url)
 page_source = driver.page_source
 
 soup = BeautifulSoup(page_source, 'html.parser')
-div_content = soup.find('div', class_='active').text
+div_content = soup.find('div', class_='active')
 current_value = div_content
 print(current_value)
