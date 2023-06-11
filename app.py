@@ -3,7 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 import os
-
+import time
 
 url = 'https://double.turbogames.io/'
 
@@ -19,7 +19,7 @@ chrome_options.add_argument("--no-sandbox")
 # Initialize the WebDriver
 driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options)
 driver.get(url)
-
+time.sleep(10)
 page_source = driver.page_source
 
 soup = BeautifulSoup(page_source, 'html.parser')
