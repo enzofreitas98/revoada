@@ -21,8 +21,5 @@ driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROME
 driver.get(url)
 
 page_source = driver.page_source
-soup = BeautifulSoup(page_source, 'html.parser')
-div_content = soup.find('div', class_='active').text
-current_value = div_content
 
 print(page_source)
