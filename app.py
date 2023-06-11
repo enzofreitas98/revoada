@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import os
 import time
 
-url = 'https://double.turbogames.io/'
+url = 'https://google.com'
 
 # Configure Chrome driver options
 chrome_options = webdriver.ChromeOptions()
