@@ -22,4 +22,3 @@ page_source = driver.page_source
 
 print(page_source)
 
-driver.quit()
