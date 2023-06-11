@@ -11,7 +11,7 @@ import time
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
-url = 'https://double.turbogames.io/'
+url = 'https://google.com/'
 
 # Configure Chrome driver options
 chrome_options = webdriver.ChromeOptions()
