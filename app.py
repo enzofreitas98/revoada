@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 import os
 
 
-url = 'https://www.google.com/'
+url = 'https://double.turbogames.io/'
 
 # Configure Chrome driver options
 chrome_options = webdriver.ChromeOptions()
@@ -16,7 +16,7 @@ chrome_options.add_argument("--no-sandbox")
 
 
 # Initialize the WebDriver
-driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), chrome_options=chrome_options)
+driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options)
 driver.get(url)
 
 print(driver.page_source)
