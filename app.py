@@ -3,6 +3,7 @@ from selenium import webdriver
 import os
 
 
+
 options = webdriver.ChromeOptions() 
 options.add_argument("start-maximized")
 options.add_argument('--headless')
