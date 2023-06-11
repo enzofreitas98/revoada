@@ -19,10 +19,10 @@ chrome_options.add_argument("--no-sandbox")
 # Initialize the WebDriver
 driver = webdriver.Chrome(service=Service(executable_path=os.environ.get("CHROMEDRIVER_PATH")), options=chrome_options)
 driver.get(url)
-time.sleep(10)
-page_source = driver.page_source
 
+page_source = driver.page_source
 soup = BeautifulSoup(page_source, 'html.parser')
-div_content = soup.find('div', class_='active')
+div_content = soup.find('div', class_='active').text
 current_value = div_content
+
 print(current_value)
